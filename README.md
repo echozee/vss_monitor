@@ -10,4 +10,4 @@ Windows VSS 활동을 수집·시각화하여 스냅샷 작업과 Requester 추�
 - `third_party/`, `tools/` 외부 의존성과 스크립트
 
 ## 빌드(계획)
-Visual Studio 2026, x64, MSVC v143+, 최신 Windows SDK. 솔루션 이름: `VssActivityMonitor.sln`.
+Visual Studio 2026, x64, MSVC v143+, 최신 Windows SDK. 솔루션: `src/VssActivityMonitor.sln`.

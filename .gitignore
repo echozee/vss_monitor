@@ -45,6 +45,7 @@
 **/x64/
 **/Debug/
 **/Release/
+**/Build/
 *.user
 *.VC.db
 *.opendb
