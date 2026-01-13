@@ -1,30 +1,30 @@
-TASK: implement_core_public_api_and_models
+﻿TASK: 코어 공개 API와 데이터 모델 구현
 
-REFERENCES:
+참고 문서:
 - docs/PRD.md
 - docs/Architecture.md
 - docs/agent.md
 
-PRECEDENCE:
-- PRD > Architecture > This TASK
+우선순위:
+- PRD > Architecture > 본 태스크
 
-REQUIREMENTS:
-- FR-1 (start/stop monitoring)
-- FR-3 (transaction model)
-- FR-4 (estimated requester with confidence)
+요구사항:
+- FR-1(모니터링 Start/Stop)
+- FR-3(트랜잭션 모델)
+- FR-4(Requester 추정 및 Confidence)
 - NFR-1, NFR-2
 
-GOAL:
-- Define the Core public API and immutable data models.
-- UI must be able to subscribe without knowing ETW details.
+목표:
+- Core의 공개 API와 변경 불가능한 데이터 모델을 정의한다.
+- UI는 ETW 세부를 몰라도 Subscribe할 수 있어야 한다.
 
-PUBLIC_API_TO_DEFINE:
+정의할 공개 API:
 - class CoreFacade
   - bool Start();
   - void Stop();
   - void Subscribe(callback);
 
-DATA_MODELS:
+데이터 모델:
 1) VssEvent
    - timestamp
    - provider
@@ -51,25 +51,24 @@ DATA_MODELS:
    - requester_candidates[]
    - events[]
 
-DESIGN_RULES:
-- Core exposes read-only snapshots to UI.
-- No UI headers included in Core.
-- Use std::chrono for time.
-- All ownership via value types or std::unique_ptr.
-- Thread-safe subscription dispatch.
+설계 규칙:
+- Core는 읽기 전용 스냅샷을 UI에 제공.
+- Core는 UI 헤더에 의존하지 않는다.
+- 시간은 std::chrono 사용.
+- 소유권은 값 또는 std::unique_ptr.
+- 구독자 호출은 스레드 안전하게 디스패치.
 
-FILES_TO_CREATE_OR_EDIT:
+작성할 파일:
 - src/core/include/vssmon/core_facade.h
 - src/core/include/vssmon/model/event.h
 - src/core/include/vssmon/model/transaction.h
 - src/core/src/core_facade.cpp
 
-CONTENT_RULES:
-- Implement minimal logic only (no ETW yet).
-- Fake/synthetic data generation is allowed for testing.
+콘텐츠 규칙:
+- 최소 로직만 구현(ETW 없음).
+- 테스트용 가짜/합성 데이터 생성은 허용.
 
-DONE_WHEN:
-- Core builds successfully.
-- Simple test code can subscribe and receive a synthetic transaction.
-- Commit with message:
-  "core: add public API and data models"
+완료 조건:
+- Core가 빌드 성공.
+- 간단한 테스트 코드가 구독 후 합성 트랜잭션을 수신할 수 있다.
+- 커밋 메시지: "core: add public API and data models"

@@ -1,183 +1,36 @@
-# UI Wireframe – VSS Activity Monitor (MFC)
+﻿# UI 와이어프레임 (VSS Activity Monitor)
 
-This document defines the UI structure and interaction model for the
-VSS Activity Monitor MFC application.
+이 문서는 MFC UI의 구조와 동작을 정의하는 행동 와이어프레임입니다. 명시적 변경이 없으면 이 구조를 따른다.
 
-It is a **behavioral wireframe**, not a visual design mock.
-All UI implementations must follow this structure unless explicitly updated.
+## 1. 메인 창 레이아웃
+- 상단: 메뉴/툴바, 필터/컨트롤(시간범위, 볼륨, 결과, 프로세스, Start/Stop)
+- 중단: 탭 영역(Timeline | Transactions | Process | Raw Events)
+- 하단: 상태 표시줄
 
----
+## 2. 타임라인 탭(주요 뷰)
+- 목적: 스윔레인으로 "누가 언제 무엇을 했는가" 시각화
+- 레인: Requester 후보(이름+PID), vssvc.exe, volsnap, writers
+- 글리프: 포인트 이벤트=채워진 원, 구간 이벤트=채워진 사각형
+- 인터랙션: 휠 확대/축소, 드래그 팬, 클릭 선택(하이라이트), Hover 툴팁
+- 툴팁 예: 시간, 작업, 볼륨, 트랜잭션 ID, 추정 Requester/Confidence, Evidence
 
-## 1. Main Window Layout
+## 3. 트랜잭션 탭
+- 목적: 트랜잭션 요약 테이블 제공
+- 컬럼: 시작 시각, 작업, 볼륨, Requester(추정), Confidence, 결과
+- 더블클릭 시 타임라인으로 포커스/하이라이트
 
-+------------------------------------------------------+
-| Menu / Toolbar |
-+------------------------------------------------------+
-| Filters / Controls |
-| [Time Range] [Volume] [Result] [Process] [Start/Stop]|
-+------------------------------------------------------+
-| Tabs |
-| [ Timeline | Transactions | Process | Raw Events ] |
-| |
-| Tab Content Area |
-| |
-+------------------------------------------------------+
-| Status Bar |
-+------------------------------------------------------+
+## 4. 프로세스 탭
+- 목적: 단일 프로세스 관점에서 VSS 활동 조회
+- 표시: 프로세스 정보(경로/사용자), 활동 히스토리, Confidence Breakdown
 
----
+## 5. Raw Events 탭(개발자 모드)
+- 목적: 원본 ETW 이벤트 노출
+- 기본 비활성, 메뉴에서 Developer Mode로 활성화
+- 열: Timestamp, Provider, EventId, PID, Message
 
-## 2. Timeline Tab (Primary View)
+## 6. UI 동작 규칙
+- Requester 표시는 항상 "추정"임을 명시하고 Confidence/Evidence를 노출
+- 타임라인이 기준 뷰이며 리스트 선택과 동기화
 
-### Purpose
-Visualize VSS activity as a time-ordered sequence using swimlanes,
-showing **who did what, and when**.
-
-### Layout
-
-+------------------------------------------------------+
-| Timeline Controls |
-| [Zoom -] [Zoom +] [Auto Follow ☐] [Clear] |
-+------------------------------------------------------+
-| Time Axis |
-| 10:01 10:02 10:03 10:04 10:05 |
-+------------------------------------------------------+
-| Lane Header | Timeline Canvas |
-|------------------------------------------------------|
-| backup.exe (4120) | ●─────█────────● |
-| vssvc.exe | ● ● ● █████ █ ● ● |
-| volsnap.sys | ██████████ |
-| Writers (System) | █ Freeze █ Thaw █ |
-+------------------------------------------------------+
-
-
-### Swimlane Rules
-- Each lane represents one entity:
-  - Requester process (name + PID)
-  - vssvc.exe
-  - volsnap
-  - VSS writers (grouped)
-- Lane order:
-  1. Requester candidates
-  2. vssvc.exe
-  3. volsnap
-  4. writers
-
-### Glyphs
-- **Point Event (●)**  
-  - Instantaneous events (RPC call, request start)
-- **Span Event (█)**  
-  - Duration events (snapshot create, freeze/thaw)
-
-### Interaction
-- Mouse wheel: zoom in/out
-- Mouse drag: horizontal pan
-- Click event: select and highlight
-- Hover event: tooltip display
-
-### Tooltip Content
-Time: 10:02:14.221
-Operation: Snapshot Create
-Volume: C:
-Transaction ID: TX-2026-0008
-Requester (estimated): backup.exe (PID 4120)
-Confidence: 0.86
-Evidence:
-
-COM call within 12ms
-
-Known backup tool
-
----
-
-## 3. Transactions Tab
-
-### Purpose
-Provide a summarized, table-based view of VSS transactions.
-
-### Layout
-
-+------------------------------------------------------+
-| Time | Operation | Volume | Requester |
-|------------------------------------------------------|
-| 10:02:14 | Snapshot Create | C: | backup.exe |
-| 10:01:02 | Snapshot Delete | C: | unknown |
-+------------------------------------------------------+
-
-
-
-### Columns
-- Start Time
-- Operation
-- Volume(s)
-- Requester (estimated)
-- Confidence
-- Result
-
-### Interaction
-- Double-click row → jump to Timeline and highlight transaction
-
----
-
-## 4. Process Tab
-
-### Purpose
-Inspect VSS activity from a single process perspective.
-
-### Layout
-
-Process: backup.exe (PID 4120)
-Path: C:\Program Files\Backup\backup.exe
-User: NT AUTHORITY\SYSTEM
-
-VSS Activity:
-
-10:02:14 Snapshot Create (C:) SUCCESS
-
-09:45:01 Enumerate Writers
-
-
-
-### Additional Panel
-**Confidence Breakdown**
-RPC Correlation : +0.40
-Known Tool : +0.30
-Time Proximity : +0.16
-Final Confidence: 0.86
-
-
----
-
-## 5. Raw Events Tab (Developer Mode)
-
-### Purpose
-Expose raw ETW events for debugging and development.
-
-### Layout
-
-[Timestamp] [Provider] [EventId] [PID] [Message]
-10:02:14.345 Volsnap 36 - Snapshot started
-
-
-
-### Notes
-- Disabled by default
-- Enabled via menu: View → Developer Mode
-
----
-
-## 6. UI Behavior Rules
-
-- Requester identity must ALWAYS be labeled as **estimated**
-- Confidence and evidence must be visible somewhere in UI
-- Timeline is the authoritative view
-- List views must synchronize selection with Timeline
-
----
-
-## 7. Non-Goals
-- Pixel-perfect visual design
-- Animations
-- Custom theming
-
-This document defines **structure and behavior only**.
+## 7. 비목표
+- 픽셀 단위 시각 디자인, 애니메이션, 커스텀 테마는 범위 밖

@@ -1,3 +1,3 @@
-Each .task file represents ONE isolated development step.
-Tasks must reference PRD and Architecture.
-Do not combine multiple features in one task.
+﻿각 `.task` 파일은 하나의 독립 개발 단계입니다.
+PRD와 Architecture를 참고한 뒤 태스크를 수행하세요.
+여러 기능을 한 태스크에 섞지 마세요.

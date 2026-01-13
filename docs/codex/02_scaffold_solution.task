@@ -1,58 +1,57 @@
-TASK: scaffold_visual_studio_solution
+﻿TASK: Visual Studio 솔루션 스캐폴드
 
-REFERENCES:
+참고 문서:
 - docs/PRD.md
 - docs/Architecture.md
 - docs/agent.md
 
-PRECEDENCE:
-- PRD > Architecture > This TASK
+우선순위:
+- PRD > Architecture > 본 태스크
 
-GOAL:
-- Create Visual Studio solution and empty projects according to architecture.
-- No business logic implementation yet.
+목표:
+- 아키텍처에 맞춰 Visual Studio 솔루션과 빈 프로젝트를 만든다.
+- 비즈니스 로직은 구현하지 않는다.
 
-SOLUTION:
-- Name: VssActivityMonitor.sln
+솔루션:
+- 이름: VssActivityMonitor.sln
 
-PROJECTS_TO_CREATE:
+프로젝트 생성:
 1) VssMon.Core
-   - Type: Static Library
-   - Language: C++
-   - Location: src/core/
-   - Unicode enabled
-   - No MFC dependency
+   - 타입: Static Library
+   - 언어: C++
+   - 위치: src/core/
+   - Unicode 사용
+   - MFC 의존성 없음
 
 2) VssMon.UiMfc
-   - Type: Windows Desktop Application (MFC)
-   - Location: src/ui_mfc/
-   - Unicode enabled
-   - Uses shared MFC DLL
+   - 타입: Windows Desktop Application (MFC)
+   - 위치: src/ui_mfc/
+   - Unicode 사용
+   - 동적 MFC DLL 사용
 
 3) VssMon.Tests
-   - Type: Console Application
-   - Location: src/tests/
-   - Prepared for GoogleTest (not required yet)
+   - 타입: Console Application
+   - 위치: src/tests/
+   - GoogleTest 준비(구현은 미필수)
 
-PROJECT_STRUCTURE_RULES:
-- Core headers go under: src/core/include/vssmon/
-- Core sources go under: src/core/src/
-- UI headers/sources go under: src/ui_mfc/ui/
-- No code generation outside src/
+구조 규칙:
+- Core 헤더: src/core/include/vssmon/
+- Core 소스: src/core/src/
+- UI 헤더/소스: src/ui_mfc/ui/
+- 코드 생성은 src/ 이하에만 둔다.
 
-BUILD_SETTINGS:
-- Platform: x64
-- Configurations: Debug, Release
-- Toolset: MSVC v143 or later
-- C++ standard: C++20 (Core compatible with C++17)
+빌드 설정:
+- 플랫폼: x64
+- 구성: Debug, Release
+- 툴셋: MSVC v143 이상
+- C++ 표준: C++20(Core는 C++17 호환)
 
-CONTENT_RULES:
-- Do not implement ETW, UI logic, or correlation yet.
-- Only create minimal placeholder cpp/h files if needed.
-- Projects must build successfully in Release x64.
+콘텐츠 규칙:
+- ETW, UI 로직, 상관분석 미구현.
+- 필요한 최소의 placeholder cpp/h만 추가.
+- Release x64 빌드가 성공해야 한다.
 
-DONE_WHEN:
-- VssActivityMonitor.sln builds in Release x64.
-- No warnings treated as errors.
-- Commit changes with message:
-  "chore: scaffold Visual Studio solution and projects"
+완료 조건:
+- VssActivityMonitor.sln이 Release x64에서 빌드 성공.
+- 경고를 에러로 취급하지 않는다.
+- 커밋 메시지: "chore: scaffold Visual Studio solution and projects"

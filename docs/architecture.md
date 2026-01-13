@@ -1,16 +1,15 @@
-﻿# Architecture
+﻿# 아키텍처
 
-## Solution Layout
-- Solution: `VssActivityMonitor.sln`
-- Projects: `VssMon.Core` (Static Lib/DLL ready), `VssMon.UiMfc` (MFC EXE), `VssMon.Tests` (Console/GoogleTest).
+## 솔루션 구성
+- 솔루션: `src/VssActivityMonitor.sln`
+- 프로젝트: `VssMon.Core`(Static Lib), `VssMon.UiMfc`(MFC EXE), `VssMon.Tests`(Console/GoogleTest).
 
-## Recommended Build Environment
-- Visual Studio 최신(2026 시점) / MSVC toolset v143 이상
-- Windows SDK: 최신(10/11 SDK)
+## 권장 빌드 환경
+- Visual Studio 2026 / MSVC v143 이상, Windows 10/11 SDK 최신
 - C++ 표준: Core는 C++17 호환, C++20 권장
-- UI: MFC (유니코드)
+- UI: MFC(유니코드, 동적 링크)
 
-## Folder Structure (예시)
+## 폴더 구조(예시)
 ```
 repo/
   docs/
@@ -59,12 +58,12 @@ repo/
 
 ## 핵심 클래스 책임
 - `EtwSession`: ETW 세션 생성/시작/중지(RAII)
-- `EtwConsumer`: 이벤트 콜백 수신 → 내부 큐 전달
-- `EventNormalizer`: Provider별 raw 이벤트 → 공통 `VssEvent`로 정규화
-- `Correlator`: 시간창/ActivityId/Client-Server 호출관계 기반으로 `VssTransaction` 생성/갱신, Requester 후보 스코어링
-- `CoreFacade`: UI가 쓰기 쉬운 단일 인터페이스(Start/Stop/Subscribe)
+- `EtwConsumer`: 이벤트 콜백 수신 후 내부 큐로 전달
+- `EventNormalizer`: Provider별 raw 이벤트를 공통 `VssEvent`로 정규화
+- `Correlator`: 시간창/ActivityId/Client-Server 호출관계로 `VssTransaction` 생성·갱신, Requester 후보 스코어링
+- `CoreFacade`: UI가 사용하기 위한 단일 인터페이스(Start/Stop/Subscribe)
 
-## MFC UI 구성 (Mock 기준)
+## MFC UI 구성(Mock 기준)
 - 메인 프레임: 2행 Splitter
   - 상단: 필터/컨트롤(시간범위, 볼륨, 결과, 프로세스 필터, Live/Pause)
   - 하단: TabCtrl

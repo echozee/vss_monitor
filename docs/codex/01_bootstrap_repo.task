@@ -1,16 +1,16 @@
-TASK: bootstrap_repository_structure
+﻿TASK: 저장소 기본 구조 부트스트랩
 
-REFERENCES:
-- docs/PRD.md (to be created)
-- docs/Architecture.md (to be created)
-- docs/UI-Wireframe.md (to be created)
-- docs/agent.md (to be created)
+참고 문서:
+- docs/PRD.md (생성 대상)
+- docs/Architecture.md (생성 대상)
+- docs/UI-Wireframe.md (생성 대상)
+- docs/agent.md (생성 대상)
 
-GOAL:
-- Create the initial repository folder structure and add baseline docs/tasks.
-- Do not implement code yet.
+목표:
+- 초기 폴더 구조와 기본 문서/태스크 파일을 생성한다.
+- 코드 구현은 하지 않는다.
 
-REPO_LAYOUT_TO_CREATE:
+생성할 레이아웃:
 - docs/
   - PRD.md
   - Architecture.md
@@ -35,14 +35,11 @@ REPO_LAYOUT_TO_CREATE:
 - .gitignore
 - README.md
 
-CONTENT_RULES:
-- Put PRD content into docs/PRD.md
-- Put architecture content into docs/Architecture.md
-- Put UI wireframe content into docs/UI-Wireframe.md
-- Put agent rules into docs/agent.md
-- Keep docs concise; do not invent requirements beyond these documents.
+콘텐츠 규칙:
+- PRD 내용은 docs/PRD.md에, 아키텍처는 docs/Architecture.md에, UI 와이어프레임은 docs/UI-Wireframe.md에, 에이전트 규칙은 docs/agent.md에 담는다.
+- 문서는 간결히 작성하고, 요구사항을 임의로 추가하지 않는다.
 
-DONE_WHEN:
-- All folders and placeholder files exist.
-- git status shows the new files staged.
-- Commit with message: "chore: bootstrap repo structure and docs"
+완료 조건:
+- 모든 폴더와 플레이스홀더 파일이 존재한다.
+- git status에 새 파일이 스테이지된 상태다.
+- 커밋 메시지: "chore: bootstrap repo structure and docs"
