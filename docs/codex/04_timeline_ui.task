@@ -1,0 +1,64 @@
+TASK: implement_mfc_timeline_swimlane
+
+REFERENCES:
+- docs/PRD.md
+- docs/Architecture.md
+- docs/UI-Wireframe.md
+
+PRECEDENCE:
+- PRD > Architecture > This TASK
+
+REQUIREMENTS:
+- FR-1 (Start/Stop monitoring)
+- FR-3 (Transaction-based visualization)
+- FR-4 (Requester must be shown as estimated with confidence & evidence)
+- NFR-1 (No memory / handle leaks)
+- NFR-2 (UI thread must not block)
+- NFR-3 (Stable under high event volume)
+
+GOAL:
+- Implement MFC-based swimlane timeline UI to visualize VSS activity.
+- Lanes: Requester processes, vssvc.exe, volsnap, writers.
+- Visualize both point events and span events.
+- Enable selection and inspection of events/transactions.
+
+CONSTRAINTS:
+- Use MFC only (no WPF/Qt).
+- Core (VssMon.Core) must not depend on UI.
+- All GDI objects must be managed with RAII.
+- Follow Google C++ style and C++ Core Guidelines.
+
+UI_SPEC:
+- Timeline is a custom CWnd-derived control.
+- Time flows left → right with adaptive zoom.
+- Lane headers on the left show process name + PID if available.
+- Point event = filled circle.
+- Span event = filled rectangle.
+- Selected item highlighted; hover shows tooltip.
+
+INTERACTION:
+- Mouse wheel: zoom in/out.
+- Mouse drag: horizontal pan.
+- Click: select event and notify main frame.
+
+THREADING:
+- Core emits events on worker thread.
+- UI updates via PostMessage (no direct cross-thread calls).
+
+FILES_TO_CREATE_OR_EDIT:
+- src/ui_mfc/ui/TimelineView.h
+- src/ui_mfc/ui/TimelineView.cpp
+- src/ui_mfc/ui/UiModel.h
+- src/ui_mfc/ui/UiModel.cpp
+- src/ui_mfc/ui/CoreUiBridge.h
+- src/ui_mfc/ui/CoreUiBridge.cpp
+- src/ui_mfc/ui/MainFrm.h
+- src/ui_mfc/ui/MainFrm.cpp
+
+DONE_WHEN:
+- Timeline tab renders lanes and time axis.
+- Synthetic events render correctly (debug mode).
+- UI remains responsive under continuous updates.
+- No GDI/handle leaks observed.
+- Code builds in Release x64.
+- Changes are committed to git.

@@ -1,0 +1,75 @@
+TASK: implement_core_public_api_and_models
+
+REFERENCES:
+- docs/PRD.md
+- docs/Architecture.md
+- docs/agent.md
+
+PRECEDENCE:
+- PRD > Architecture > This TASK
+
+REQUIREMENTS:
+- FR-1 (start/stop monitoring)
+- FR-3 (transaction model)
+- FR-4 (estimated requester with confidence)
+- NFR-1, NFR-2
+
+GOAL:
+- Define the Core public API and immutable data models.
+- UI must be able to subscribe without knowing ETW details.
+
+PUBLIC_API_TO_DEFINE:
+- class CoreFacade
+  - bool Start();
+  - void Stop();
+  - void Subscribe(callback);
+
+DATA_MODELS:
+1) VssEvent
+   - timestamp
+   - provider
+   - event_id
+   - op_type
+   - volume_id (optional)
+   - activity_id (optional)
+   - pid (optional)
+   - raw_fields
+
+2) RequesterCandidate
+   - pid
+   - process_name
+   - confidence_score (0.0 ~ 1.0)
+   - evidence[]
+
+3) VssTransaction
+   - tx_id
+   - start_time
+   - end_time
+   - op_type
+   - volumes[]
+   - result
+   - requester_candidates[]
+   - events[]
+
+DESIGN_RULES:
+- Core exposes read-only snapshots to UI.
+- No UI headers included in Core.
+- Use std::chrono for time.
+- All ownership via value types or std::unique_ptr.
+- Thread-safe subscription dispatch.
+
+FILES_TO_CREATE_OR_EDIT:
+- src/core/include/vssmon/core_facade.h
+- src/core/include/vssmon/model/event.h
+- src/core/include/vssmon/model/transaction.h
+- src/core/src/core_facade.cpp
+
+CONTENT_RULES:
+- Implement minimal logic only (no ETW yet).
+- Fake/synthetic data generation is allowed for testing.
+
+DONE_WHEN:
+- Core builds successfully.
+- Simple test code can subscribe and receive a synthetic transaction.
+- Commit with message:
+  "core: add public API and data models"

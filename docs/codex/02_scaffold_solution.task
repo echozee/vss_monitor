@@ -1,0 +1,58 @@
+TASK: scaffold_visual_studio_solution
+
+REFERENCES:
+- docs/PRD.md
+- docs/Architecture.md
+- docs/agent.md
+
+PRECEDENCE:
+- PRD > Architecture > This TASK
+
+GOAL:
+- Create Visual Studio solution and empty projects according to architecture.
+- No business logic implementation yet.
+
+SOLUTION:
+- Name: VssActivityMonitor.sln
+
+PROJECTS_TO_CREATE:
+1) VssMon.Core
+   - Type: Static Library
+   - Language: C++
+   - Location: src/core/
+   - Unicode enabled
+   - No MFC dependency
+
+2) VssMon.UiMfc
+   - Type: Windows Desktop Application (MFC)
+   - Location: src/ui_mfc/
+   - Unicode enabled
+   - Uses shared MFC DLL
+
+3) VssMon.Tests
+   - Type: Console Application
+   - Location: src/tests/
+   - Prepared for GoogleTest (not required yet)
+
+PROJECT_STRUCTURE_RULES:
+- Core headers go under: src/core/include/vssmon/
+- Core sources go under: src/core/src/
+- UI headers/sources go under: src/ui_mfc/ui/
+- No code generation outside src/
+
+BUILD_SETTINGS:
+- Platform: x64
+- Configurations: Debug, Release
+- Toolset: MSVC v143 or later
+- C++ standard: C++20 (Core compatible with C++17)
+
+CONTENT_RULES:
+- Do not implement ETW, UI logic, or correlation yet.
+- Only create minimal placeholder cpp/h files if needed.
+- Projects must build successfully in Release x64.
+
+DONE_WHEN:
+- VssActivityMonitor.sln builds in Release x64.
+- No warnings treated as errors.
+- Commit changes with message:
+  "chore: scaffold Visual Studio solution and projects"

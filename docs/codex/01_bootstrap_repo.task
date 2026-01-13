@@ -1,0 +1,48 @@
+TASK: bootstrap_repository_structure
+
+REFERENCES:
+- docs/PRD.md (to be created)
+- docs/Architecture.md (to be created)
+- docs/UI-Wireframe.md (to be created)
+- docs/agent.md (to be created)
+
+GOAL:
+- Create the initial repository folder structure and add baseline docs/tasks.
+- Do not implement code yet.
+
+REPO_LAYOUT_TO_CREATE:
+- docs/
+  - PRD.md
+  - Architecture.md
+  - UI-Wireframe.md
+  - agent.md
+  - codex/
+    - README.md
+    - 01_bootstrap_repo.task
+    - 02_scaffold_solution.task
+    - 03_core_api.task
+    - 04_timeline_ui.task
+- src/
+  - core/
+    - include/vssmon/.gitkeep
+    - src/.gitkeep
+  - ui_mfc/
+    - ui/.gitkeep
+    - res/.gitkeep
+  - tests/.gitkeep
+- third_party/.gitkeep
+- tools/.gitkeep
+- .gitignore
+- README.md
+
+CONTENT_RULES:
+- Put PRD content into docs/PRD.md
+- Put architecture content into docs/Architecture.md
+- Put UI wireframe content into docs/UI-Wireframe.md
+- Put agent rules into docs/agent.md
+- Keep docs concise; do not invent requirements beyond these documents.
+
+DONE_WHEN:
+- All folders and placeholder files exist.
+- git status shows the new files staged.
+- Commit with message: "chore: bootstrap repo structure and docs"
