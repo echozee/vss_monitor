@@ -52,6 +52,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)ui;$(SolutionDir)src\core\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,6 +67,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)ui;$(SolutionDir)src\core\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,6 +75,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ui\Main.cpp" />
+    <ClCompile Include="ui\CoreUiBridge.cpp" />
+    <ClCompile Include="ui\TimelineView.cpp" />
+    <ClCompile Include="ui\UiModel.cpp" />
+    <ClCompile Include="ui\MainFrm.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ui\CoreUiBridge.h" />
+    <ClInclude Include="ui\MainFrm.h" />
+    <ClInclude Include="ui\TimelineView.h" />
+    <ClInclude Include="ui\UiModel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\\core\\VssMon.Core.vcxproj">
+      <Project>{531b4df9-7d8f-4740-9deb-c47d235a2bc8}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
